@@ -1,44 +1,66 @@
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --tb-red: #E8313A;
+  --tb-charcoal: #1A1A2E;
+  --tb-red-light: #FDE8E9;
+  --tb-red-mid: #F7ADB1;
+  --tb-warm: #F9F5F0;
+}
 .wrap { padding: 1rem 0; }
-.section-title { font-size: 13px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+.tb-header { display: flex; align-items: center; gap: 14px; padding: 1rem 1.25rem; background: var(--tb-warm); border: 0.5px solid var(--border); border-radius: 12px; margin-bottom: 1rem; }
+.tb-logo-svg { width: 48px; height: 48px; flex-shrink: 0; }
+.tb-brand-name { font-size: 20px; font-weight: 500; color: var(--tb-red); letter-spacing: -0.3px; }
+.tb-brand-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.section-title { font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
 .card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
 .form-row.full { grid-template-columns: 1fr; }
 .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
 .field label { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; font-weight: 500; }
-.field input, .field select, .field textarea { width: 100%; font-family: var(--font-sans); font-size: 14px; }
-.field textarea { resize: vertical; min-height: 64px; padding: 8px 10px; }
-.doc-type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
-.doc-chip { border: 0.5px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 13px; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 6px; background: var(--surface-1); }
-.doc-chip:hover { border-color: var(--border-accent); color: var(--text-accent); }
-.doc-chip.active { border-color: var(--border-accent); background: var(--bg-accent); color: var(--text-accent); font-weight: 500; }
-.doc-chip i { font-size: 16px; }
+.field input, .field textarea { width: 100%; font-family: var(--font-sans); font-size: 14px; }
+.field textarea { resize: vertical; min-height: 60px; padding: 8px 10px; }
+.doc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+.doc-chip { border: 0.5px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 13px; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; gap: 6px; background: var(--surface-1); transition: all 0.12s; }
+.doc-chip:hover { border-color: var(--tb-red); color: var(--tb-red); }
+.doc-chip.active { border-color: var(--tb-red); background: var(--tb-red-light); color: var(--tb-red); font-weight: 500; }
 .item-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
 .item-row input { flex: 1; }
-.btn-remove { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; padding: 0 4px; line-height: 1; }
+.btn-remove { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; padding: 0 4px; }
 .btn-remove:hover { color: var(--text-danger); }
 .btn-add { background: none; border: 0.5px solid var(--border); border-radius: 6px; color: var(--text-secondary); cursor: pointer; font-size: 13px; padding: 6px 12px; display: flex; align-items: center; gap: 5px; margin-top: 4px; }
 .btn-add:hover { background: var(--surface-1); }
 .actions { display: flex; gap: 10px; margin-top: 1rem; flex-wrap: wrap; }
-.btn-generate { flex: 1; min-width: 180px; padding: 11px; border: none; border-radius: 8px; background: var(--fill-accent); color: var(--on-accent); font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
-.btn-generate:hover { opacity: 0.9; }
+.btn-generate { flex: 1; min-width: 180px; padding: 11px; border: none; border-radius: 8px; background: var(--tb-red); color: white; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.btn-generate:hover { background: #c41f28; }
 .btn-clear { padding: 11px 16px; border: 0.5px solid var(--border); border-radius: 8px; background: none; color: var(--text-muted); font-size: 14px; cursor: pointer; }
-.toast { display: none; background: var(--bg-success); color: var(--text-success); border: 0.5px solid var(--border-success); border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-top: 10px; align-items: center; gap: 8px; }
-.toast.show { display: flex; }
-.instructions { background: var(--bg-accent); border: 0.5px solid var(--border-accent); border-radius: 8px; padding: 12px 14px; font-size: 13px; color: var(--text-accent); margin-top: 10px; line-height: 1.6; display: none; }
+.instructions { background: var(--tb-red-light); border: 0.5px solid var(--tb-red-mid); border-radius: 8px; padding: 12px 14px; font-size: 13px; color: var(--tb-charcoal); margin-top: 10px; line-height: 1.6; display: none; }
 .instructions.show { display: block; }
 .instructions ol { padding-left: 1.2rem; margin-top: 4px; }
 .instructions li { margin-bottom: 3px; }
 </style>
 
 <div class="wrap">
-  <h2 class="sr-only">Acknowledgment Receipt Generator</h2>
+  <h2 class="sr-only">TBSI Acknowledgment Receipt Generator</h2>
+
+  <div class="tb-header">
+    <svg class="tb-logo-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="52" r="10" fill="#E8313A"/>
+      <path d="M60 42 C60 42 35 20 22 38 C14 50 30 65 60 52" fill="#E8313A" opacity="0.9"/>
+      <path d="M60 42 C60 42 85 20 98 38 C106 50 90 65 60 52" fill="#E8313A" opacity="0.75"/>
+      <path d="M60 62 C60 62 40 75 42 92 C44 104 62 104 60 80" fill="#E8313A" opacity="0.85"/>
+      <text x="60" y="115" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#E8313A" text-anchor="middle" letter-spacing="1">topbliss</text>
+    </svg>
+    <div>
+      <div class="tb-brand-name">topbliss</div>
+      <div class="tb-brand-sub">Top Bliss Solutions Inc. — HR Document Generator</div>
+    </div>
+  </div>
 
   <div class="card">
     <div class="section-title">Document type</div>
-    <div class="doc-type-grid">
+    <div class="doc-grid">
       <div class="doc-chip active" data-type="Acknowledgment Receipt" onclick="selectDoc(this)"><i class="ti ti-writing-sign" aria-hidden="true"></i> Acknowledgment receipt</div>
       <div class="doc-chip" data-type="Receiving Copy" onclick="selectDoc(this)"><i class="ti ti-file-check" aria-hidden="true"></i> Receiving copy</div>
       <div class="doc-chip" data-type="Proof of Issuance" onclick="selectDoc(this)"><i class="ti ti-certificate" aria-hidden="true"></i> Proof of issuance</div>
@@ -104,7 +126,7 @@
       <div class="field"><label>Received by (title)</label><input id="receivedByTitle" type="text" placeholder="e.g. Employee" /></div>
     </div>
     <div class="form-row">
-      <div class="field"><label>Noted by (name, optional)</label><input id="notedByName" type="text" placeholder="Manager / HR Head" /></div>
+      <div class="field"><label>Noted by (name, optional)</label><input id="notedByName" type="text" placeholder="e.g. Ms. Nica / CEO" /></div>
       <div class="field"><label>Noted by (title)</label><input id="notedByTitle" type="text" placeholder="e.g. COO / CEO" /></div>
     </div>
   </div>
@@ -114,21 +136,27 @@
     <button class="btn-generate" onclick="generateDoc()"><i class="ti ti-external-link" aria-hidden="true"></i> Generate &amp; open document</button>
   </div>
 
-  <div class="toast" id="toast"><i class="ti ti-circle-check" aria-hidden="true"></i> Document opened in a new tab — print or save as PDF from there.</div>
-
   <div class="instructions" id="instructions">
     <strong>Document opened in a new tab.</strong> To print or save as PDF:
     <ol>
       <li>Go to the new tab that just opened</li>
       <li>Press <strong>Ctrl+P</strong> (Windows) or <strong>Cmd+P</strong> (Mac)</li>
-      <li>Choose your printer, or select <strong>Save as PDF</strong></li>
+      <li>Choose your printer or select <strong>Save as PDF</strong></li>
     </ol>
-    <span style="color: var(--text-muted); font-size: 12px;">If the tab was blocked, allow pop-ups for this site and try again.</span>
+    <span style="color:#888;font-size:12px;">If the tab was blocked, allow pop-ups for this site and try again.</span>
   </div>
 </div>
 
 <script>
 let selectedDocType = "Acknowledgment Receipt";
+
+const LOGO_SVG = `<svg width="60" height="70" viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="60" cy="52" r="10" fill="#E8313A"/>
+  <path d="M60 42 C60 42 35 20 22 38 C14 50 30 65 60 52" fill="#E8313A" opacity="0.9"/>
+  <path d="M60 42 C60 42 85 20 98 38 C106 50 90 65 60 52" fill="#E8313A" opacity="0.75"/>
+  <path d="M60 62 C60 62 40 75 42 92 C44 104 62 104 60 80" fill="#E8313A" opacity="0.85"/>
+  <text x="60" y="120" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#E8313A" text-anchor="middle" letter-spacing="1">topbliss</text>
+</svg>`;
 
 function selectDoc(el) {
   document.querySelectorAll('.doc-chip').forEach(c => c.classList.remove('active'));
@@ -140,7 +168,7 @@ function addItem() {
   const list = document.getElementById('itemsList');
   const row = document.createElement('div');
   row.className = 'item-row';
-  row.innerHTML = `<input type="text" placeholder="Item or document description" /><input type="text" placeholder="Qty" style="max-width: 80px;" /><button class="btn-remove" onclick="removeItem(this)" aria-label="Remove"><i class="ti ti-x" aria-hidden="true"></i></button>`;
+  row.innerHTML = `<input type="text" placeholder="Item or document description" /><input type="text" placeholder="Qty" style="max-width:80px;" /><button class="btn-remove" onclick="removeItem(this)" aria-label="Remove"><i class="ti ti-x" aria-hidden="true"></i></button>`;
   list.appendChild(row);
 }
 
@@ -159,8 +187,8 @@ function fmtDate(val) {
 function genRefNo() {
   if (v('refNo')) return v('refNo');
   const d = new Date();
-  const prefix = {"Acknowledgment Receipt":"AR","Receiving Copy":"RC","Proof of Issuance":"PI","Document Receipt":"DR","Equipment Acknowledgment":"EA","Policy Receipt":"PR"}[selectedDocType] || "AR";
-  return `${prefix}-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+  const p = {"Acknowledgment Receipt":"AR","Receiving Copy":"RC","Proof of Issuance":"PI","Document Receipt":"DR","Equipment Acknowledgment":"EA","Policy Receipt":"PR"}[selectedDocType]||"AR";
+  return `${p}-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
 }
 
 function getItems() {
@@ -170,7 +198,7 @@ function getItems() {
   }).filter(it => it.desc);
 }
 
-function buildFullHTML() {
+function buildHTML() {
   const items = getItems();
   const refNo = genRefNo();
   const itemRows = items.length
@@ -191,48 +219,55 @@ function buildFullHTML() {
 <meta charset="UTF-8"/>
 <title>${selectedDocType} - ${refNo}</title>
 <style>
-  @media print { @page { margin: 1.8cm 2cm; } }
+  @media print { @page { margin: 1.8cm 2cm; } body { padding: 0 !important; } }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, sans-serif; font-size: 13px; color: #1a1a1a; background: white; padding: 2.5rem; max-width: 780px; margin: 0 auto; }
-  .header { text-align: center; border-bottom: 2.5px solid #1a1a1a; padding-bottom: 12px; margin-bottom: 18px; }
-  .company { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
-  .doc-type { font-size: 20px; font-weight: 700; margin: 5px 0 2px; }
-  .ref { font-size: 12px; color: #555; }
-  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; background: #f5f5f5; padding: 12px 16px; border-radius: 5px; margin-bottom: 18px; }
+  body { font-family: Arial, sans-serif; font-size: 13px; color: #1a1a2e; background: white; padding: 2.5rem; max-width: 780px; margin: 0 auto; }
+  .header { text-align: center; border-bottom: 3px solid #E8313A; padding-bottom: 14px; margin-bottom: 18px; }
+  .logo-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px; }
+  .company { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #1a1a2e; }
+  .doc-type { font-size: 20px; font-weight: 700; color: #1a1a2e; margin: 4px 0 2px; }
+  .ref { font-size: 12px; color: #666; }
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; background: #f5f5f0; padding: 12px 16px; border-radius: 5px; margin-bottom: 18px; border-left: 3px solid #E8313A; }
   .meta-item { font-size: 13px; }
-  .meta-item .lbl { font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 1px; }
+  .meta-item .lbl { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 1px; }
   .meta-item.full { grid-column: 1 / -1; }
   table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 13px; }
-  th { background: #1a1a1a; color: white; padding: 7px 10px; text-align: left; font-weight: 600; }
+  th { background: #E8313A; color: white; padding: 8px 10px; text-align: left; font-weight: 600; }
   td { border-bottom: 0.5px solid #ddd; padding: 7px 10px; }
   .notes { font-size: 13px; background: #fffbe6; border-left: 3px solid #d4a000; padding: 9px 13px; border-radius: 0 4px 4px 0; margin-bottom: 16px; }
   .condition-line { font-size: 13px; margin-bottom: 14px; }
-  .stmt { font-size: 12.5px; color: #333; border: 0.5px solid #ccc; padding: 10px 14px; border-radius: 4px; margin-bottom: 20px; background: #fafafa; line-height: 1.6; }
+  .stmt { font-size: 12.5px; color: #333; border: 0.5px solid #ddd; padding: 10px 14px; border-radius: 4px; margin-bottom: 20px; background: #fafafa; line-height: 1.6; border-left: 3px solid #E8313A; }
   .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
   .sig-box { }
-  .sig-line { border-top: 1.5px solid #1a1a1a; margin-bottom: 6px; height: 50px; }
+  .sig-line { border-top: 1.5px solid #1a1a2e; margin-bottom: 6px; height: 50px; }
   .sig-name { font-weight: 700; font-size: 13px; }
-  .sig-sub { color: #555; font-size: 12px; }
-  .footer { margin-top: 2rem; border-top: 0.5px solid #ccc; padding-top: 8px; font-size: 10px; color: #999; text-align: center; }
-  @media print { body { padding: 0; } }
+  .sig-sub { color: #666; font-size: 12px; }
+  .footer { margin-top: 2rem; border-top: 0.5px solid #ddd; padding-top: 8px; font-size: 10px; color: #aaa; text-align: center; }
+  .footer span { color: #E8313A; font-weight: 700; }
 </style>
 </head>
 <body>
 <div class="header">
-  <div class="company">Top Bliss Solutions Inc.</div>
+  <div class="logo-row">
+    ${LOGO_SVG}
+    <div>
+      <div class="company">Top Bliss Solutions Inc.</div>
+      <div style="font-size:11px;color:#888;">EaseBrew Herbal Coffee</div>
+    </div>
+  </div>
   <div class="doc-type">${selectedDocType}</div>
   <div class="ref">Ref. No.: ${refNo}</div>
 </div>
 
 <div class="meta-grid">
   <div class="meta-item"><span class="lbl">Date issued</span>${fmtDate(v('dateIssued'))}</div>
-  <div class="meta-item"><span class="lbl">Department</span>${v('dept') || '—'}</div>
-  <div class="meta-item"><span class="lbl">Recipient name</span>${v('recipientName') || '—'}</div>
-  <div class="meta-item"><span class="lbl">Employee ID</span>${v('empId') || '—'}</div>
-  <div class="meta-item"><span class="lbl">Position / role</span>${v('recipientRole') || '—'}</div>
+  <div class="meta-item"><span class="lbl">Department</span>${v('dept')||'—'}</div>
+  <div class="meta-item"><span class="lbl">Recipient name</span>${v('recipientName')||'—'}</div>
+  <div class="meta-item"><span class="lbl">Employee ID</span>${v('empId')||'—'}</div>
+  <div class="meta-item"><span class="lbl">Position / role</span>${v('recipientRole')||'—'}</div>
   <div class="meta-item"><span class="lbl">Date received</span>${fmtDate(v('dateReceived'))}</div>
-  ${v('docTitle') ? `<div class="meta-item full"><span class="lbl">Document / subject</span>${v('docTitle')}</div>` : ''}
-  ${v('purpose') ? `<div class="meta-item full"><span class="lbl">Purpose</span>${v('purpose')}</div>` : ''}
+  ${v('docTitle')?`<div class="meta-item full"><span class="lbl">Document / subject</span>${v('docTitle')}</div>`:''}
+  ${v('purpose')?`<div class="meta-item full"><span class="lbl">Purpose</span>${v('purpose')}</div>`:''}
 </div>
 
 <table>
@@ -240,8 +275,8 @@ function buildFullHTML() {
   <tbody>${itemRows}</tbody>
 </table>
 
-${v('condition') ? `<p class="condition-line"><strong>Condition upon receipt:</strong> ${v('condition')}</p>` : ''}
-${v('remarks') ? `<div class="notes"><strong>Remarks / Notes:</strong> ${v('remarks')}</div>` : ''}
+${v('condition')?`<p class="condition-line"><strong>Condition upon receipt:</strong> ${v('condition')}</p>`:''}
+${v('remarks')?`<div class="notes"><strong>Remarks / Notes:</strong> ${v('remarks')}</div>`:''}
 
 <div class="stmt">
   I hereby acknowledge receipt of the item(s) and/or document(s) listed above in the condition stated. This serves as an official record of receipt. I understand my responsibilities in relation to the above and confirm that all listed items have been received in full.
@@ -250,41 +285,38 @@ ${v('remarks') ? `<div class="notes"><strong>Remarks / Notes:</strong> ${v('rema
 <div class="sig-grid">
   <div class="sig-box">
     <div class="sig-line"></div>
-    <div class="sig-name">${v('receivedByName') || v('recipientName') || '___________________________'}</div>
-    <div class="sig-sub">${v('receivedByTitle') || 'Recipient / Employee'}</div>
+    <div class="sig-name">${v('receivedByName')||v('recipientName')||'___________________________'}</div>
+    <div class="sig-sub">${v('receivedByTitle')||'Recipient / Employee'}</div>
     <div class="sig-sub">Date: _______________</div>
   </div>
   <div class="sig-box">
     <div class="sig-line"></div>
-    <div class="sig-name">${v('issuedByName') || '___________________________'}</div>
-    <div class="sig-sub">${v('issuedByTitle') || 'HR Officer / Issuing Person'}</div>
+    <div class="sig-name">${v('issuedByName')||'___________________________'}</div>
+    <div class="sig-sub">${v('issuedByTitle')||'HR Officer / Issuing Person'}</div>
     <div class="sig-sub">Date: _______________</div>
   </div>
   ${notedBlock}
 </div>
 
-<div class="footer">Top Bliss Solutions Inc. &nbsp;·&nbsp; Internal Use Only &nbsp;·&nbsp; ${refNo} &nbsp;·&nbsp; Generated: ${new Date().toLocaleDateString('en-PH')}</div>
+<div class="footer"><span>topbliss</span> &nbsp;·&nbsp; Top Bliss Solutions Inc. &nbsp;·&nbsp; Internal Use Only &nbsp;·&nbsp; ${refNo} &nbsp;·&nbsp; Generated: ${new Date().toLocaleDateString('en-PH')}</div>
 </body>
 </html>`;
 }
 
 function generateDoc() {
-  const html = buildFullHTML();
+  const html = buildHTML();
   const blob = new Blob([html], { type: 'text/html' });
   const url = URL.createObjectURL(blob);
-  const win = window.open(url, '_blank');
+  window.open(url, '_blank');
   document.getElementById('instructions').classList.add('show');
-  document.getElementById('toast').classList.add('show');
-  setTimeout(() => document.getElementById('toast').classList.remove('show'), 5000);
 }
 
 function clearAll() {
   ['refNo','dateIssued','dept','docTitle','purpose','recipientName','recipientRole','empId','dateReceived','condition','remarks','issuedByName','issuedByTitle','receivedByName','receivedByTitle','notedByName','notedByTitle'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.value = '';
+    const el = document.getElementById(id); if(el) el.value='';
   });
-  document.getElementById('itemsList').innerHTML = `<div class="item-row"><input type="text" placeholder="Item or document description" /><input type="text" placeholder="Qty" style="max-width: 80px;" /><button class="btn-remove" onclick="removeItem(this)" aria-label="Remove"><i class="ti ti-x" aria-hidden="true"></i></button></div>`;
+  document.getElementById('itemsList').innerHTML = `<div class="item-row"><input type="text" placeholder="Item or document description" /><input type="text" placeholder="Qty" style="max-width:80px;" /><button class="btn-remove" onclick="removeItem(this)" aria-label="Remove"><i class="ti ti-x" aria-hidden="true"></i></button></div>`;
   document.getElementById('instructions').classList.remove('show');
-  document.getElementById('toast').classList.remove('show');
   document.getElementById('dateIssued').value = new Date().toISOString().split('T')[0];
   document.getElementById('dateReceived').value = new Date().toISOString().split('T')[0];
 }
