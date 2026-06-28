@@ -1,0 +1,294 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+.wrap { padding: 1rem 0; }
+.section-title { font-size: 13px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+.card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-row.full { grid-template-columns: 1fr; }
+.form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+.field label { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; font-weight: 500; }
+.field input, .field select, .field textarea { width: 100%; font-family: var(--font-sans); font-size: 14px; }
+.field textarea { resize: vertical; min-height: 64px; padding: 8px 10px; }
+.doc-type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+.doc-chip { border: 0.5px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 13px; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 6px; background: var(--surface-1); }
+.doc-chip:hover { border-color: var(--border-accent); color: var(--text-accent); }
+.doc-chip.active { border-color: var(--border-accent); background: var(--bg-accent); color: var(--text-accent); font-weight: 500; }
+.doc-chip i { font-size: 16px; }
+.item-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+.item-row input { flex: 1; }
+.btn-remove { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; padding: 0 4px; line-height: 1; }
+.btn-remove:hover { color: var(--text-danger); }
+.btn-add { background: none; border: 0.5px solid var(--border); border-radius: 6px; color: var(--text-secondary); cursor: pointer; font-size: 13px; padding: 6px 12px; display: flex; align-items: center; gap: 5px; margin-top: 4px; }
+.btn-add:hover { background: var(--surface-1); }
+.actions { display: flex; gap: 10px; margin-top: 1rem; flex-wrap: wrap; }
+.btn-generate { flex: 1; min-width: 180px; padding: 11px; border: none; border-radius: 8px; background: var(--fill-accent); color: var(--on-accent); font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.btn-generate:hover { opacity: 0.9; }
+.btn-clear { padding: 11px 16px; border: 0.5px solid var(--border); border-radius: 8px; background: none; color: var(--text-muted); font-size: 14px; cursor: pointer; }
+.toast { display: none; background: var(--bg-success); color: var(--text-success); border: 0.5px solid var(--border-success); border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-top: 10px; align-items: center; gap: 8px; }
+.toast.show { display: flex; }
+.instructions { background: var(--bg-accent); border: 0.5px solid var(--border-accent); border-radius: 8px; padding: 12px 14px; font-size: 13px; color: var(--text-accent); margin-top: 10px; line-height: 1.6; display: none; }
+.instructions.show { display: block; }
+.instructions ol { padding-left: 1.2rem; margin-top: 4px; }
+.instructions li { margin-bottom: 3px; }
+</style>
+
+<div class="wrap">
+  <h2 class="sr-only">Acknowledgment Receipt Generator</h2>
+
+  <div class="card">
+    <div class="section-title">Document type</div>
+    <div class="doc-type-grid">
+      <div class="doc-chip active" data-type="Acknowledgment Receipt" onclick="selectDoc(this)"><i class="ti ti-writing-sign" aria-hidden="true"></i> Acknowledgment receipt</div>
+      <div class="doc-chip" data-type="Receiving Copy" onclick="selectDoc(this)"><i class="ti ti-file-check" aria-hidden="true"></i> Receiving copy</div>
+      <div class="doc-chip" data-type="Proof of Issuance" onclick="selectDoc(this)"><i class="ti ti-certificate" aria-hidden="true"></i> Proof of issuance</div>
+      <div class="doc-chip" data-type="Document Receipt" onclick="selectDoc(this)"><i class="ti ti-file-text" aria-hidden="true"></i> Document receipt</div>
+      <div class="doc-chip" data-type="Equipment Acknowledgment" onclick="selectDoc(this)"><i class="ti ti-device-laptop" aria-hidden="true"></i> Equipment acknowledgment</div>
+      <div class="doc-chip" data-type="Policy Receipt" onclick="selectDoc(this)"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Policy receipt</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Document info</div>
+    <div class="form-row three">
+      <div class="field"><label>Reference no.</label><input id="refNo" type="text" placeholder="e.g. AR-2026-001" /></div>
+      <div class="field"><label>Date issued</label><input id="dateIssued" type="date" /></div>
+      <div class="field"><label>Department</label><input id="dept" type="text" placeholder="e.g. HR, Finance" /></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Subject / document title</label><input id="docTitle" type="text" placeholder="e.g. Company ID, Employment Contract" /></div>
+      <div class="field"><label>Purpose / context</label><input id="purpose" type="text" placeholder="e.g. New hire onboarding" /></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Recipient</div>
+    <div class="form-row three">
+      <div class="field"><label>Full name</label><input id="recipientName" type="text" placeholder="Employee name" /></div>
+      <div class="field"><label>Position / role</label><input id="recipientRole" type="text" placeholder="e.g. Sales Associate" /></div>
+      <div class="field"><label>Employee ID</label><input id="empId" type="text" placeholder="e.g. TBSI-001" /></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Date received</label><input id="dateReceived" type="date" /></div>
+      <div class="field"><label>Condition (if applicable)</label><input id="condition" type="text" placeholder="e.g. Good, Sealed, N/A" /></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Items / documents received</div>
+    <div id="itemsList">
+      <div class="item-row">
+        <input type="text" placeholder="Item or document description" />
+        <input type="text" placeholder="Qty" style="max-width: 80px;" />
+        <button class="btn-remove" onclick="removeItem(this)" aria-label="Remove"><i class="ti ti-x" aria-hidden="true"></i></button>
+      </div>
+    </div>
+    <button class="btn-add" onclick="addItem()"><i class="ti ti-plus" aria-hidden="true"></i> Add item</button>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Remarks <span style="font-weight:400;text-transform:none;color:var(--text-muted)">(optional)</span></div>
+    <div class="form-row full">
+      <div class="field"><textarea id="remarks" placeholder="Any conditions, instructions, or special notes..."></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Signatures</div>
+    <div class="form-row">
+      <div class="field"><label>Issued by (name)</label><input id="issuedByName" type="text" placeholder="HR Officer / issuing person" /></div>
+      <div class="field"><label>Issued by (title)</label><input id="issuedByTitle" type="text" placeholder="e.g. HR Officer" /></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Received by (name)</label><input id="receivedByName" type="text" placeholder="Leave blank to use recipient name" /></div>
+      <div class="field"><label>Received by (title)</label><input id="receivedByTitle" type="text" placeholder="e.g. Employee" /></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Noted by (name, optional)</label><input id="notedByName" type="text" placeholder="Manager / HR Head" /></div>
+      <div class="field"><label>Noted by (title)</label><input id="notedByTitle" type="text" placeholder="e.g. COO / CEO" /></div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-clear" onclick="clearAll()">Clear</button>
+    <button class="btn-generate" onclick="generateDoc()"><i class="ti ti-external-link" aria-hidden="true"></i> Generate &amp; open document</button>
+  </div>
+
+  <div class="toast" id="toast"><i class="ti ti-circle-check" aria-hidden="true"></i> Document opened in a new tab — print or save as PDF from there.</div>
+
+  <div class="instructions" id="instructions">
+    <strong>Document opened in a new tab.</strong> To print or save as PDF:
+    <ol>
+      <li>Go to the new tab that just opened</li>
+      <li>Press <strong>Ctrl+P</strong> (Windows) or <strong>Cmd+P</strong> (Mac)</li>
+      <li>Choose your printer, or select <strong>Save as PDF</strong></li>
+    </ol>
+    <span style="color: var(--text-muted); font-size: 12px;">If the tab was blocked, allow pop-ups for this site and try again.</span>
+  </div>
+</div>
+
+<script>
+let selectedDocType = "Acknowledgment Receipt";
+
+function selectDoc(el) {
+  document.querySelectorAll('.doc-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selectedDocType = el.dataset.type;
+}
+
+function addItem() {
+  const list = document.getElementById('itemsList');
+  const row = document.createElement('div');
+  row.className = 'item-row';
+  row.innerHTML = `<input type="text" placeholder="Item or document description" /><input type="text" placeholder="Qty" style="max-width: 80px;" /><button class="btn-remove" onclick="removeItem(this)" aria-label="Remove"><i class="ti ti-x" aria-hidden="true"></i></button>`;
+  list.appendChild(row);
+}
+
+function removeItem(btn) {
+  if (document.querySelectorAll('.item-row').length > 1) btn.parentElement.remove();
+}
+
+function v(id) { return document.getElementById(id)?.value.trim() || ''; }
+
+function fmtDate(val) {
+  if (!val) return '___________________';
+  const d = new Date(val + 'T00:00:00');
+  return d.toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function genRefNo() {
+  if (v('refNo')) return v('refNo');
+  const d = new Date();
+  const prefix = {"Acknowledgment Receipt":"AR","Receiving Copy":"RC","Proof of Issuance":"PI","Document Receipt":"DR","Equipment Acknowledgment":"EA","Policy Receipt":"PR"}[selectedDocType] || "AR";
+  return `${prefix}-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function getItems() {
+  return Array.from(document.querySelectorAll('.item-row')).map((r,i) => {
+    const ins = r.querySelectorAll('input');
+    return { desc: ins[0].value.trim(), qty: ins[1].value.trim() || '1' };
+  }).filter(it => it.desc);
+}
+
+function buildFullHTML() {
+  const items = getItems();
+  const refNo = genRefNo();
+  const itemRows = items.length
+    ? items.map((it,i) => `<tr><td>${i+1}</td><td>${it.desc}</td><td>${it.qty}</td></tr>`).join('')
+    : `<tr><td>1</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>2</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>3</td><td>&nbsp;</td><td>&nbsp;</td></tr>`;
+
+  const notedBlock = v('notedByName') ? `
+    <div class="sig-box">
+      <div class="sig-line"></div>
+      <div class="sig-name">${v('notedByName')}</div>
+      <div class="sig-sub">${v('notedByTitle') || 'Noted by'}</div>
+      <div class="sig-sub">Date: _______________</div>
+    </div>` : '';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>${selectedDocType} - ${refNo}</title>
+<style>
+  @media print { @page { margin: 1.8cm 2cm; } }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; font-size: 13px; color: #1a1a1a; background: white; padding: 2.5rem; max-width: 780px; margin: 0 auto; }
+  .header { text-align: center; border-bottom: 2.5px solid #1a1a1a; padding-bottom: 12px; margin-bottom: 18px; }
+  .company { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+  .doc-type { font-size: 20px; font-weight: 700; margin: 5px 0 2px; }
+  .ref { font-size: 12px; color: #555; }
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; background: #f5f5f5; padding: 12px 16px; border-radius: 5px; margin-bottom: 18px; }
+  .meta-item { font-size: 13px; }
+  .meta-item .lbl { font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 1px; }
+  .meta-item.full { grid-column: 1 / -1; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 13px; }
+  th { background: #1a1a1a; color: white; padding: 7px 10px; text-align: left; font-weight: 600; }
+  td { border-bottom: 0.5px solid #ddd; padding: 7px 10px; }
+  .notes { font-size: 13px; background: #fffbe6; border-left: 3px solid #d4a000; padding: 9px 13px; border-radius: 0 4px 4px 0; margin-bottom: 16px; }
+  .condition-line { font-size: 13px; margin-bottom: 14px; }
+  .stmt { font-size: 12.5px; color: #333; border: 0.5px solid #ccc; padding: 10px 14px; border-radius: 4px; margin-bottom: 20px; background: #fafafa; line-height: 1.6; }
+  .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
+  .sig-box { }
+  .sig-line { border-top: 1.5px solid #1a1a1a; margin-bottom: 6px; height: 50px; }
+  .sig-name { font-weight: 700; font-size: 13px; }
+  .sig-sub { color: #555; font-size: 12px; }
+  .footer { margin-top: 2rem; border-top: 0.5px solid #ccc; padding-top: 8px; font-size: 10px; color: #999; text-align: center; }
+  @media print { body { padding: 0; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="company">Top Bliss Solutions Inc.</div>
+  <div class="doc-type">${selectedDocType}</div>
+  <div class="ref">Ref. No.: ${refNo}</div>
+</div>
+
+<div class="meta-grid">
+  <div class="meta-item"><span class="lbl">Date issued</span>${fmtDate(v('dateIssued'))}</div>
+  <div class="meta-item"><span class="lbl">Department</span>${v('dept') || '—'}</div>
+  <div class="meta-item"><span class="lbl">Recipient name</span>${v('recipientName') || '—'}</div>
+  <div class="meta-item"><span class="lbl">Employee ID</span>${v('empId') || '—'}</div>
+  <div class="meta-item"><span class="lbl">Position / role</span>${v('recipientRole') || '—'}</div>
+  <div class="meta-item"><span class="lbl">Date received</span>${fmtDate(v('dateReceived'))}</div>
+  ${v('docTitle') ? `<div class="meta-item full"><span class="lbl">Document / subject</span>${v('docTitle')}</div>` : ''}
+  ${v('purpose') ? `<div class="meta-item full"><span class="lbl">Purpose</span>${v('purpose')}</div>` : ''}
+</div>
+
+<table>
+  <thead><tr><th style="width:40px">#</th><th>Item / document description</th><th style="width:90px">Qty / copies</th></tr></thead>
+  <tbody>${itemRows}</tbody>
+</table>
+
+${v('condition') ? `<p class="condition-line"><strong>Condition upon receipt:</strong> ${v('condition')}</p>` : ''}
+${v('remarks') ? `<div class="notes"><strong>Remarks / Notes:</strong> ${v('remarks')}</div>` : ''}
+
+<div class="stmt">
+  I hereby acknowledge receipt of the item(s) and/or document(s) listed above in the condition stated. This serves as an official record of receipt. I understand my responsibilities in relation to the above and confirm that all listed items have been received in full.
+</div>
+
+<div class="sig-grid">
+  <div class="sig-box">
+    <div class="sig-line"></div>
+    <div class="sig-name">${v('receivedByName') || v('recipientName') || '___________________________'}</div>
+    <div class="sig-sub">${v('receivedByTitle') || 'Recipient / Employee'}</div>
+    <div class="sig-sub">Date: _______________</div>
+  </div>
+  <div class="sig-box">
+    <div class="sig-line"></div>
+    <div class="sig-name">${v('issuedByName') || '___________________________'}</div>
+    <div class="sig-sub">${v('issuedByTitle') || 'HR Officer / Issuing Person'}</div>
+    <div class="sig-sub">Date: _______________</div>
+  </div>
+  ${notedBlock}
+</div>
+
+<div class="footer">Top Bliss Solutions Inc. &nbsp;·&nbsp; Internal Use Only &nbsp;·&nbsp; ${refNo} &nbsp;·&nbsp; Generated: ${new Date().toLocaleDateString('en-PH')}</div>
+</body>
+</html>`;
+}
+
+function generateDoc() {
+  const html = buildFullHTML();
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const win = window.open(url, '_blank');
+  document.getElementById('instructions').classList.add('show');
+  document.getElementById('toast').classList.add('show');
+  setTimeout(() => document.getElementById('toast').classList.remove('show'), 5000);
+}
+
+function clearAll() {
+  ['refNo','dateIssued','dept','docTitle','purpose','recipientName','recipientRole','empId','dateReceived','condition','remarks','issuedByName','issuedByTitle','receivedByName','receivedByTitle','notedByName','notedByTitle'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  document.getElementById('itemsList').innerHTML = `<div class="item-row"><input type="text" placeholder="Item or document description" /><input type="text" placeholder="Qty" style="max-width: 80px;" /><button class="btn-remove" onclick="removeItem(this)" aria-label="Remove"><i class="ti ti-x" aria-hidden="true"></i></button></div>`;
+  document.getElementById('instructions').classList.remove('show');
+  document.getElementById('toast').classList.remove('show');
+  document.getElementById('dateIssued').value = new Date().toISOString().split('T')[0];
+  document.getElementById('dateReceived').value = new Date().toISOString().split('T')[0];
+}
+
+document.getElementById('dateIssued').value = new Date().toISOString().split('T')[0];
+document.getElementById('dateReceived').value = new Date().toISOString().split('T')[0];
+</script>
